@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EchoClientCore": {
+      "commandName": "Project",
+      "commandLineArgs": "ConfigForLocalhost.xml"
+    }
+  }
+}

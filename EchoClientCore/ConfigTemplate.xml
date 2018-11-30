@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<settings>
+    <!--常规配置-->
+    <!--protocol: udp(复用socket发送udp包), tcp(以长连接的方式进行测试)-->
+    <!--clientcount: client的数量-->
+    <!--threadsperclient: 每个client的发送线程数-->
+    <!--buffersize: 接收缓冲区大小-->
+    <general protocol="udp" clientcount="1" threadsperclient="8" buffersize="2048" />
+    <!--目标-->
+    <!--自测时可以直接在本地搭一个UDP回显-->
+    <!--ip: IPv4或者IPv6地址-->
+    <!--port: 端口-->
+    <target ip="127.0.0.1" port="7777" />
+    <!--发包控制-->
+    <!--你是要发一定数量,还是发一段时间,还是手动停止呢-->
+    <!--mode: count(发一定数量即可), time(发一段时间即可), manual(手动停止发包)-->
+    <!--param: count模式下表示发包数量, time模式下表示发包时间(毫秒), manual模式下无意义-->
+    <control mode="count" param="1000000" />
+    <!--接力发送(发包模式)-->
+    <!--本压测程序的核心,如何控制接力发送-->
+    <!--mode: interval(固定间隔发包,连续发送,可调节interval), onsend(固定速度发包,接收到发送回调后接力投递下一次请求,可调节maxpps和ppsdelay)-->
+    <!--mode: onrecv(接力发包,收到接收回调后接力投递下一次请求,可调节warmupcount和warmupinterval)-->
+    <!--interval: loop模式下表示发包间隔,单位是毫秒-->
+    <!--maxpps: onsend模式下表示最大发包速度-->
+    <!--ppsdelay: onsend模式下,如果实时发包速度超过maxpps设置的值,那么会delay几毫秒再投递下一个包-->
+    <!--warmupcount: onrecv模式下,需要预先投递的发送请求的个数-->
+    <!--warmupinterval: onrecv模式下,投递发送请求时的间隔-->
+    <relay mode="onrecv" interval="10" maxpps="1000" ppsdelay="5" warmupcount="50000" warmupinterval="10" />
+    <!--Debug-->
+    <!--sendpoolsize: 发包池大小-->
+    <debug sendpoolsize="1000000" />
+    <!--数据协议-->
+    <!--本压测程序需要配合回显服务使用，如果发送和接收的数据需要添加自定包头，请指定此项-->
+    <!--mode: raw(不需要指定包头，发送纯回显数据), fakes5(添加伪s5包头), fakes5echo(伪s5包头,udping)-->
+    <!--param1: 参数一-->
+    <!--param2: 参数二-->
+    <dataprotocol mode="raw" param1="invalid" param2="0" param3="0" param4="0" param5="0" />
+    <!--Log打点-->
+    <!--mode: count(按发包数量打点), time(按时间间隔打点)-->
+    <!--param: 发包数量或者间隔时间(毫秒)-->
+    <log mode="count" param="100000" />
+</settings>
