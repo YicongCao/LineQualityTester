@@ -29,6 +29,8 @@ namespace EchoClientCore
         private string ipacc;
         private int portacc;
         private IPEndPoint targetacc;
+        private bool unsupervised;
+        private int selfkilltime;
         public ConfigManager()
         {
             protocol = controlmode = relaymode = logmode = ip = "invalid";
@@ -58,6 +60,7 @@ namespace EchoClientCore
         public bool Init(string ConfigFileName)
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + ConfigFileName;
+            Console.WriteLine($"配置文件名称: {path}");
             if (File.Exists(path))
             {
                 // 读取文件内容
@@ -107,6 +110,8 @@ namespace EchoClientCore
                 warmupcount = ReadConfigToInt(doc, "relay", "warmupcount", 500);
                 warmupinterval = ReadConfigToInt(doc, "relay", "warmupinterval", 1);
                 sendpoolsize = ReadConfigToInt(doc, "debug", "sendpoolsize", 8);
+                unsupervised = ReadConfigToBool(doc, "debug", "unsupervised", false);
+                selfkilltime = ReadConfigToInt(doc, "debug", "selfkilltime", 60 * 1000);
                 logmode = ReadConfigToString(doc, "log", "mode", "time");
                 logparam = ReadConfigToInt(doc, "log", "param", 5000);
                 dataprotocol = ReadConfigToString(doc, "dataprotocol", "mode", "raw");
@@ -245,6 +250,26 @@ namespace EchoClientCore
             while (false);
             return ret;
         }
+        private bool ReadConfigToBool(XDocument doc, string elementName, string attributeName, bool defaultVal = false)
+        {
+            bool ret = defaultVal;
+            do
+            {
+                string val = ReadConfigToString(doc, elementName, attributeName);
+                if (val == null)
+                {
+                    break;
+                }
+                if (!bool.TryParse(val, out ret))
+                {
+                    Logger.Instance.LogTrace($"属性 {elementName}->{attributeName}: [{val}] 无法转换成bool, 使用默认值 {defaultVal}");
+                    ret = defaultVal;
+                    break;
+                }
+            }
+            while (false);
+            return ret;
+        }
         /// <summary>
         /// TCP or UDP
         /// </summary>
@@ -339,5 +364,15 @@ namespace EchoClientCore
         /// </summary>
         /// <value>The target acc.</value>
         public IPEndPoint TargetAcc { get => targetacc; }
+        /// <summary>
+        /// 无人值守（不按任意键结束）
+        /// </summary>
+        /// <value>The target acc.</value>
+        public bool Unsupervised { get => unsupervised; }
+        /// <summary>
+        /// 自杀时间（无人值守时，程序运行时间）
+        /// </summary>
+        /// <value>The target acc.</value>
+        public int SelfKillTime { get => selfkilltime; }
     }
 }

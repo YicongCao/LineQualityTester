@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<settings>
+    <general protocol="udp" clientcount="1" threadsperclient="6" buffersize="2048" />
+    <target ip="119.28.184.33" port="7781" />
+    <control mode="count" param="50000" />
+    <relay mode="onsend" interval="50" maxpps="2000" ppsdelay="2" warmupcount="5000" warmupinterval="1" />
+    <debug sendpoolsize="1000000" unsupervised="true" selfkilltime="60000"/>
+    <dataprotocol mode="raw" />
+    <log mode="time" param="3500" />
+</settings>

@@ -28,7 +28,9 @@
     <relay mode="onrecv" interval="10" maxpps="1000" ppsdelay="5" warmupcount="50000" warmupinterval="10" />
     <!--Debug-->
     <!--sendpoolsize: 发包池大小-->
-    <debug sendpoolsize="1000000" />
+    <!--unsupervised: 无人值守-->
+    <!--selfkilltime: 无人值守为True时，程序运行时间-->
+    <debug sendpoolsize="1000000" unsupervised="true" selfkilltime="60000"/>
     <!--数据协议-->
     <!--本压测程序需要配合回显服务使用，如果发送和接收的数据需要添加自定包头，请指定此项-->
     <!--mode: raw(不需要指定包头，发送纯回显数据), fakes5(添加伪s5包头), fakes5echo(伪s5包头,udping)-->

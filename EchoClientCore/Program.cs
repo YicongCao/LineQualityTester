@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 
 namespace EchoClientCore
 {
@@ -26,10 +27,21 @@ namespace EchoClientCore
                     Logger.Instance.LogError("压测程序无法开始测试");
                     break;
                 }
-                Console.ReadKey(true);
+                bool unsupervised = ConfigManager.Instance.Unsupervised;
+                if (unsupervised)
+                {
+                    Thread.Sleep(ConfigManager.Instance.SelfKillTime);
+                }
+                else
+                {
+                    Console.ReadKey(true);
+                }
                 pear.StopManually();
                 Logger.Instance.LogInfo("再次按任意键退出");
-                Console.ReadKey(true);
+                if (!unsupervised)
+                {
+                    Console.ReadKey(true);
+                }
                 return;
             }
             while (false);

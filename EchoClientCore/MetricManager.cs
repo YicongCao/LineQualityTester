@@ -13,7 +13,8 @@ namespace EchoClientCore
     {
         Realtime = 0,
         Period = 1,
-        Total = 2
+        Total = 2,
+        TotalLog = 3,
     }
     /// <summary>
     /// 性能计数管理类
@@ -169,6 +170,21 @@ namespace EchoClientCore
             {
                 prefix = "总计";
                 index = TOTAL;
+            }
+            if (metricType == MetricType.TotalLog)
+            {
+                prefix = "日志";
+                index = TOTAL;
+
+                return string.Format("{0}, {1}, {2}pps, {3}ms, {4}, {5}lost, {6}sent, {7}Mbps",
+                                 prefix,
+                                 DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                                 speedMeters[index].GetSpeed(),
+                                 latencyMeters[index].GetLatency(),
+                                 lossMeters[index].GetLossString(),
+                                 lossMeters[index].GetLoss().Item1 - lossMeters[index].GetLoss().Item2,
+                                 lossMeters[index].GetLoss().Item1,
+                                 (double)speedMeters[index].GetSpeed() * lastSendBytes * 8d / 1000d / 1000d);
             }
             return string.Format("[{5}] 速度: {0}pps, 延迟: {1:f2}ms, 丢包: {2} ({3}/{4}), 带宽: {6:f2}Mbps",
                                  speedMeters[index].GetSpeed(),

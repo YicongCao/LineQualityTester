@@ -268,6 +268,7 @@ namespace EchoClientCore
                 Thread.Sleep(waitms);  // 等待最后的回包
                 Console.WriteLine("\r\n测试完成, 下面是最终结果: ");
                 Console.WriteLine(metricManager.GetMetricMessage(MetricType.Total));
+                Console.WriteLine(metricManager.GetMetricMessage(MetricType.TotalLog));
                 Console.WriteLine();
                 Logger.Instance.LogInfo("测试程序已停止");
             }
